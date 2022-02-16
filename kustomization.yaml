@@ -2,14 +2,14 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-    - ingrees-controller/nginix configmap.yaml
-    - ingrees-controller/nginix ingress-class.yaml
-    - ingrees-controller/nginix ingress-deployment.yaml
-    - ingrees-controller/nginix ingress-service.yaml
-    - ingrees-controller/nginix ingress-webhook-service.yaml
-    - ingrees-controller/nginix namespace.yaml
-    - ingrees-controller/nginix rbac.yaml
-    - ingrees-controller/nginix serviceaccount.yaml
-    - ingrees-controller/nginix webhook-config.yaml
-    - ingrees-controller/nginix webhook-job.yaml
-    - ingrees-controller/nginix webhook-rbac.yaml
+    - ingrees-controller/nginix/configmap.yaml
+    - ingrees-controller/nginix/ingress-class.yaml
+    - ingrees-controller/nginix/ingress-deployment.yaml
+    - ingrees-controller/nginix/ingress-service.yaml
+    - ingrees-controller/nginix/ingress-webhook-service.yaml
+    - ingrees-controller/nginix/namespace.yaml
+    - ingrees-controller/nginix/rbac.yaml
+    - ingrees-controller/nginix/serviceaccount.yaml
+    - ingrees-controller/nginix/webhook-config.yaml
+    - ingrees-controller/nginix/webhook-job.yaml
+    - ingrees-controller/nginix/webhook-rbac.yaml
