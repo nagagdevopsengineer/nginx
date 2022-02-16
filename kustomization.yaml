@@ -1,3 +1,6 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
 resources:
     - ingrees-controller/nginix configmap.yaml
     - ingrees-controller/nginix ingress-class.yaml
