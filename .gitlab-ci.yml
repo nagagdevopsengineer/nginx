@@ -1,0 +1,57 @@
+# This file is a template, and might need editing before it works on your project.
+# To contribute improvements to CI/CD templates, please follow the Development guide at:
+# https://docs.gitlab.com/ee/development/cicd/templates.html
+# This specific template is located at:
+# https://gitlab.com/gitlab-org/gitlab/-/blob/master/lib/gitlab/ci/templates/Getting-Started.gitlab-ci.yml
+
+# This is a sample GitLab CI/CD configuration file that should run without any modifications.
+# It demonstrates a basic 3 stage CI/CD pipeline. Instead of real tests or scripts,
+# it uses echo commands to simulate the pipeline execution.
+#
+# A pipeline is composed of independent jobs that run scripts, grouped into stages.
+# Stages run in sequential order, but jobs within stages run in parallel.
+#
+# For more information, see: https://docs.gitlab.com/ee/ci/yaml/index.html#stages
+
+image: docker:19.03.12
+
+variables:
+  # When you use the dind service, you must instruct Docker to talk with
+  # the daemon started inside of the service. The daemon is available
+  # with a network connection instead of the default
+  # /var/run/docker.sock socket. Docker 19.03 does this automatically
+  # by setting the DOCKER_HOST in
+  # https://github.com/docker-library/docker/blob/d45051476babc297257df490d22cbd806f1b11e4/19.03/docker-entrypoint.sh#L23-L29
+  #
+  # The 'docker' hostname is the alias of the service container as described at
+  # https://docs.gitlab.com/ee/ci/services/#accessing-the-services.
+  #
+  # Specify to Docker where to create the certificates. Docker
+  # creates them automatically on boot, and creates
+  # `/certs/client` to share between the service and job
+  # container, thanks to volume mount from config.toml
+  DOCKER_TLS_CERTDIR: "/certs"
+
+services:
+  - docker:19.03.12-dind
+
+stages:          # List of stages for jobs, and their order of execution
+  - deploy_ingnix
+
+deploy-ingnix:
+  stage: deploy_namespace
+  image: vapprtech/awskubectl:latest
+  before_script:
+    #- export AWS_SECRET_KEY=$AWS_SECRET_ACCESS_KEY
+    #- export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+    - aws eks update-kubeconfig --name arrivnow --region us-east-2   
+  script:
+    - kubectl apply -k ./
+    - sleep 60
+    - kubectl get pods -n ingress-nginx --field-selector=status.phase=Running
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH == "main"'
+      changes:
+        - ingrees-controller/nginix
+      when: always    
+                                                 
