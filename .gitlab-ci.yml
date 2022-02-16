@@ -39,7 +39,7 @@ stages:          # List of stages for jobs, and their order of execution
   - deploy_ingnix
 
 deploy-ingnix:
-  stage: deploy_namespace
+  stage: deploy_ingnix
   image: vapprtech/awskubectl:latest
   before_script:
     #- export AWS_SECRET_KEY=$AWS_SECRET_ACCESS_KEY
