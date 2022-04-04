@@ -1,0 +1,41 @@
+# PostgreSQL StatefulSet - ConfigMap
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: postgres
+  namespace: postgresql
+  labels: 
+    app: postgresdb
+spec:
+  replicas: 1
+  serviceName: postgresql-db
+  selector:
+    matchLabels:
+      app: postgresdb
+  template:
+    metadata:
+      labels:
+        app: postgresdb
+    spec:
+      terminationGracePeriodSeconds: 5
+      containers:
+        - name: postgres
+          image: postgres:latest
+          imagePullPolicy: "IfNotPresent"
+          ports:
+            - containerPort: 5432
+          env:
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgresql-db-passwd
+                  key: pgsql_password        
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: postgredb-data
+      volumes:
+        - name: postgredb-data
+          persistentVolumeClaim:
+            claimName: postgres-pv-claim
