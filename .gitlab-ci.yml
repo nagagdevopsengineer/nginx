@@ -53,5 +53,4 @@ deploy-ingnix:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event" || $CI_COMMIT_BRANCH == "main"'
       changes:
         - ingrees-controller/nginix
-      when: always    
-                                                 
+      when: always
