@@ -44,7 +44,7 @@ deploy-ingnix:
   before_script:
     #- export AWS_SECRET_KEY=$AWS_SECRET_ACCESS_KEY
     #- export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
-    - aws eks update-kubeconfig --name arrivnow-qa --region us-east-2   
+    - aws eks update-kubeconfig --name arrivnow-dev --region us-east-2   
   script:
     - kubectl apply -k ./
     - sleep 60
